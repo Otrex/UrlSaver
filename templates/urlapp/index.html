@@ -1,0 +1,76 @@
+{% extends '../base.html' %}
+{% load counter %}
+{% block title %} Home {% endblock %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <div class="container text-center">
+      <h1> My Link SAVER </h1>      
+      <p> This site was created by templex, to save sites </p>
+    </div>
+  </div>
+  
+<!-- Floating button -->
+<div class="float-btn-cont">
+  <div class="float-btn-holder"><a data-toggle="modal" data-target="#exampleModalCenter" href="#"> + </a></div>
+</div>
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <form action="{% url 'get' %}" method="POST">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"> Enter The URL For Saving </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-holder">
+                    
+                    
+                        {% csrf_token %}
+                        <input name="url" class="form-group" placeholder="Enter url">
+                        <div><textarea class="form-group" name="url_details" ></textarea></div>  
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-primary" value = "Save changes">
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container-fluid bg-3 text-center">    
+    <h1>Some of my Work</h1><br>
+    <div class="row">
+    {% for url in data %}
+        {% if cnt|segment:forloop.counter0 %}
+            <div class="col-sm-12" style="height: 100px;"></div>
+        {% endif %}
+      <div class="col-sm-3">
+        <a href="{{ url.url }}" >
+          <div class="inner">
+            <img src="{{ url.links }}" class="img-responsive" style="width:100%" alt="Image">
+            <h2>{{ url.title }}</h2>
+            <div>{{ url.url_details }}</div>  
+            <div>{{ url.date_inserted }}</div>
+            <div style="text-align: right;"><a class="btn btn-primary" href="{% url 'deleteUrl' url.id %}"> Delete </a></div>
+          </div>
+        </a>
+    </div>
+      
+        
+      {% endfor %}
+    </div>
+  </div><br><br>
+  {% endblock %}
+ 

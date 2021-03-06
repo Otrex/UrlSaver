@@ -1,0 +1,57 @@
+{% extends '../base.html' %}
+{% load counter %}
+{% block title %}
+	Uploader
+{% endblock %}
+
+{% block content %}
+	
+	<div class="jumbotron">
+	    <div class="container text-center">
+	      <h1> Uploader </h1>      
+	      <p> This site was created by templex, to save sites </p>
+
+	      <form class="md-form" action="{% url 'up:get' %}" method="post" enctype='multipart/form-data'>
+	      	{% csrf_token %}
+	  
+			  <div class="file-field">
+			    <div class="btn btn-primary btn-sm float-left">
+			      <input type="file" name = "fileD">
+			      <div class="file-path-wrapper">
+			      	<input class="btn btn-primary btn-block" type="submit" placeholder="Upload one or more files">
+			      </div>
+			    </div>
+			    
+			  </div>
+
+	      </form>
+	    </div>
+	</div>
+
+
+	<div class="container-fluid bg-3 text-center">    
+    <h1> My Files </h1><br>
+    <div class="row">
+    {% for file in files %}
+        {% if cnt|segment:forloop.counter0 %}
+            <div class="col-sm-12" style="height: 100px;"></div>
+        {% endif %}
+      <div class="col-sm-3">
+        <a href="{{ file.file.url }}" >
+          <div class="inner">
+            <img src="{{ file.file.url }}" class="img-responsive" style="width:100%" alt="Image">
+            <h2>{{ file.name }}</h2>
+            <div>{{ file.date_inserted }}</div>
+            <div style="text-align: right;"><a class="btn btn-primary" href="{% url 'up:delete' file.id %}"> Delete </a></div>
+          </div>
+        </a>
+    </div>
+      
+        
+      {% endfor %}
+    </div>
+  </div><br><br>
+
+
+
+{% endblock %}
